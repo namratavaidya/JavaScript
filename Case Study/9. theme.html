@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Preference Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+      background: #f4f4f4;
+      color: #222;
+      transition: 0.3s;
+    }
+    .dark {
+      background: #222;
+      color: white;
+    }
+    .card {
+      max-width: 450px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 12px;
+      background: #fff;
+      color: #222;
+      box-shadow: 0 4px 12px #0002;
+    }
+    .dark .card {
+      background: #333;
+      color: white;
+    }
+    button {
+      padding: 10px 16px;
+      margin: 8px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>User Preference Manager</h2>
+    <p>Change your website theme and save your preference.</p>
+    <button onclick="toggleTheme()">Toggle Theme</button>
+    <button onclick="saveSession()">Save Session Note</button>
+    <p id="themeStatus"></p>
+    <p id="sessionStatus"></p>
+  </div>
+
+  <script>
+    function applyTheme(theme) {
+      document.body.classList.toggle("dark", theme === "dark");
+      document.getElementById("themeStatus").textContent =
+        "Current theme: " + theme;
+    }
+
+    function toggleTheme() {
+      const current = localStorage.getItem("theme") || "light";
+      const next = current === "light" ? "dark" : "light";
+      localStorage.setItem("theme", next);
+      applyTheme(next);
+    }
+
+    function saveSession() {
+      sessionStorage.setItem("note", "Session preference saved!");
+      document.getElementById("sessionStatus").textContent =
+        sessionStorage.getItem("note");
+    }
+
+    applyTheme(localStorage.getItem("theme") || "light");
+  </script>
+</body>
+</html>
