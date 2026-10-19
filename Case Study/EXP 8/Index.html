@@ -1,0 +1,870 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gym Registration Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e1e, #444);
+            min-height : 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px;
+        }
+
+        .container {
+            width : 100%;
+            max-width : 650px;
+
+            background: white;
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom : 8px;
+            color: #222;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom : 25px;
+        }
+
+        .form-group {
+            margin-bottom : 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom : 7px;
+            color: #333;
+        }
+
+        input,
+        select {
+            width : 100%;
+            padding: 12px;
+
+            border: 2px solid #ddd;
+            border-radius: 8px;
+
+            font-size: 15px;
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #333;
+        }
+
+        .valid {
+            border-color: #28a745 !important;
+        }
+
+        .invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .message {
+            display: block;
+            margin-top : 5px;
+            font-size: 13px;
+        }
+
+        .success {
+            color: #28a745;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        .gender {
+            display: flex;
+            gap: 25px;
+            margin-top : 8px;
+        }
+
+        .gender label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gender input {
+            width : auto;
+        }
+
+        button {
+            width : 100%;
+            padding: 14px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #222;
+            color: white;
+
+            font-size: 17px;
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        #successBox {
+            display: none;
+
+            margin-top : 20px;
+            padding: 15px;
+
+            text-align: center;
+
+            background: #d4edda;
+            color: #155724;
+
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        @media(max-width : 600px) {
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>GYM REGISTRATION</h1>
+
+    <p class="subtitle">
+        Create your account and start your fitness journey
+    </p>
+
+    <form id="registrationForm">
+
+        <!-- Full Name -->
+        <div class="form-group">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your full name"
+            >
+
+            <span id="nameMsg" class="message"></span>
+
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+
+            <label>Email Address</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+            >
+
+            <span id="emailMsg" class="message"></span>
+
+        </div>
+
+
+        <!-- Username -->
+        <div class="form-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Create a username"
+            >
+
+            <span id="usernameMsg" class="message"></span>
+
+        </div>
+
+
+        <!-- Mobile + DOB -->
+        <div class="row">
+
+            <div class="form-group">
+
+                <label>Mobile Number</label>
+
+                <input
+                    type="text"
+                    id="mobile"
+                    maxlength="10"
+                    placeholder="10-digit mobile number"
+                >
+
+                <span id="mobileMsg" class="message"></span>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Date of Birth</label>
+
+                <input
+                    type="date"
+                    id="dob"
+                >
+
+                <span id="dobMsg" class="message"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Gender -->
+        <div class="form-group">
+
+            <label>Gender</label>
+
+            <div class="gender">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Male"
+                    >
+                    Male
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Female"
+                    >
+                    Female
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="Other"
+                    >
+                    Other
+                </label>
+
+            </div>
+
+            <span id="genderMsg" class="message"></span>
+
+        </div>
+
+
+        <!-- Membership -->
+        <div class="form-group">
+
+            <label>Membership Type</label>
+
+            <select id="membership">
+
+                <option value="">
+                    Select Membership
+                </option>
+
+                <option value="Monthly">
+                    Monthly
+                </option>
+
+                <option value="Quarterly">
+                    Quarterly
+                </option>
+
+                <option value="Yearly">
+                    Yearly
+                </option>
+
+            </select>
+
+            <span id="membershipMsg" class="message"></span>
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Create password"
+            >
+
+            <span id="passwordMsg" class="message"></span>
+
+        </div>
+
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+
+            <label>Confirm Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm password"
+            >
+
+            <span id="confirmMsg" class="message"></span>
+
+        </div>
+
+
+        <button type="submit">
+            REGISTER
+        </button>
+
+    </form>
+
+
+    <div id="successBox">
+        Registration Successful! 🎉
+    </div>
+
+</div>
+
+
+<script>
+
+    const form = document.getElementById("registrationForm");
+
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const username = document.getElementById("username");
+    const mobile = document.getElementById("mobile");
+    const dob = document.getElementById("dob");
+    const membership = document.getElementById("membership");
+    const password = document.getElementById("password");
+    const confirmPassword =
+        document.getElementById("confirmPassword");
+
+
+    // Common validation function
+
+    function showResult(input, messageElement, message, valid) {
+
+        if (valid) {
+
+            input.classList.remove("invalid");
+            input.classList.add("valid");
+
+            messageElement.textContent = "✓ " + message;
+            messageElement.className = "message success";
+
+        } else {
+
+            input.classList.remove("valid");
+            input.classList.add("invalid");
+
+            messageElement.textContent = "✗ " + message;
+            messageElement.className = "message error";
+        }
+    }
+
+
+    // NAME VALIDATION
+
+    function validateName() {
+
+        const value = name.value.trim();
+
+        const pattern = /^[A-Za-z ]{3,}$/;
+
+        if (value === "") {
+
+            showResult(
+                name,
+                nameMsg,
+                "Name is required",
+                false
+            );
+
+            return false;
+
+        }
+
+        if (!pattern.test(value)) {
+
+            showResult(
+                name,
+                nameMsg,
+                "Enter a valid name",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            name,
+            nameMsg,
+            "Valid name",
+            true
+        );
+
+        return true;
+    }
+
+
+    // EMAIL VALIDATION
+
+    function validateEmail() {
+
+        const value = email.value.trim();
+
+        const pattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (value === "") {
+
+            showResult(
+                email,
+                emailMsg,
+                "Email is required",
+                false
+            );
+
+            return false;
+        }
+
+        if (!pattern.test(value)) {
+
+            showResult(
+                email,
+                emailMsg,
+                "Enter a valid email",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            email,
+            emailMsg,
+            "Valid email",
+            true
+        );
+
+        return true;
+    }
+
+
+    // USERNAME VALIDATION
+
+    function validateUsername() {
+
+        const value = username.value.trim();
+
+        const pattern =
+            /^[A-Za-z0-9_]{4,15}$/;
+
+        if (value === "") {
+
+            showResult(
+                username,
+                usernameMsg,
+                "Username is required",
+                false
+            );
+
+            return false;
+        }
+
+        if (!pattern.test(value)) {
+
+            showResult(
+                username,
+                usernameMsg,
+                "Use 4-15 letters, numbers or _",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            username,
+            usernameMsg,
+            "Username available",
+            true
+        );
+
+        return true;
+    }
+
+
+    // MOBILE VALIDATION
+
+    function validateMobile() {
+
+        const value = mobile.value.trim();
+
+        const pattern = /^[6-9][0-9]{9}$/;
+
+        if (value === "") {
+
+            showResult(
+                mobile,
+                mobileMsg,
+                "Mobile number is required",
+                false
+            );
+
+            return false;
+        }
+
+        if (!pattern.test(value)) {
+
+            showResult(
+                mobile,
+                mobileMsg,
+                "Enter valid 10-digit mobile number",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            mobile,
+            mobileMsg,
+            "Valid mobile number",
+            true
+        );
+
+        return true;
+    }
+
+
+    // DOB VALIDATION
+
+    function validateDOB() {
+
+        if (dob.value === "") {
+
+            showResult(
+                dob,
+                dobMsg,
+                "Date of birth is required",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            dob,
+            dobMsg,
+            "Date of birth selected",
+            true
+        );
+
+        return true;
+    }
+
+
+    // GENDER VALIDATION
+
+    function validateGender() {
+
+        const selected =
+            document.querySelector(
+                'input[name="gender"]:checked'
+            );
+
+        const message =
+            document.getElementById("genderMsg");
+
+        if (!selected) {
+
+            message.textContent =
+                "✗ Please select your gender";
+
+            message.className =
+                "message error";
+
+            return false;
+        }
+
+        message.textContent =
+            "✓ Gender selected";
+
+        message.className =
+            "message success";
+
+        return true;
+    }
+
+
+    // MEMBERSHIP VALIDATION
+
+    function validateMembership() {
+
+        if (membership.value === "") {
+
+            showResult(
+                membership,
+                membershipMsg,
+                "Please select membership",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            membership,
+            membershipMsg,
+            "Membership selected",
+            true
+        );
+
+        return true;
+    }
+
+
+    // PASSWORD VALIDATION
+
+    function validatePassword() {
+
+        const value = password.value;
+
+        if (value.length < 8) {
+
+            showResult(
+                password,
+                passwordMsg,
+                "Password must contain 8 characters",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            password,
+            passwordMsg,
+            "Strong password",
+            true
+        );
+
+        return true;
+    }
+
+
+    // CONFIRM PASSWORD
+
+    function validateConfirmPassword() {
+
+        const value = confirmPassword.value;
+
+        if (value === "") {
+
+            showResult(
+                confirmPassword,
+                confirmMsg,
+                "Please confirm password",
+                false
+            );
+
+            return false;
+        }
+
+        if (value !== password.value) {
+
+            showResult(
+                confirmPassword,
+                confirmMsg,
+                "Passwords do not match",
+                false
+            );
+
+            return false;
+        }
+
+        showResult(
+            confirmPassword,
+            confirmMsg,
+            "Passwords match",
+            true
+        );
+
+        return true;
+    }
+
+
+    // LIVE INPUT CHECKING
+
+    name.addEventListener("input", validateName);
+
+    email.addEventListener("input", validateEmail);
+
+    username.addEventListener(
+        "input",
+        validateUsername
+    );
+
+    mobile.addEventListener(
+        "input",
+        validateMobile
+    );
+
+    dob.addEventListener(
+        "change",
+        validateDOB
+    );
+
+    membership.addEventListener(
+        "change",
+        validateMembership
+    );
+
+    password.addEventListener(
+        "input",
+        function() {
+
+            validatePassword();
+
+            if (confirmPassword.value !== "") {
+                validateConfirmPassword();
+            }
+
+        }
+    );
+
+    confirmPassword.addEventListener(
+        "input",
+        validateConfirmPassword
+    );
+
+
+    // Gender live checking
+
+    document
+        .querySelectorAll('input[name="gender"]')
+        .forEach(function(radio) {
+
+            radio.addEventListener(
+                "change",
+                validateGender
+            );
+
+        });
+
+
+    // FORM SUBMISSION
+
+    form.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            const valid =
+                validateName() &&
+                validateEmail() &&
+                validateUsername() &&
+                validateMobile() &&
+                validateDOB() &&
+                validateGender() &&
+                validateMembership() &&
+                validatePassword() &&
+                validateConfirmPassword();
+
+
+            if (valid) {
+
+                document.getElementById(
+                    "successBox"
+                ).style.display = "block";
+
+                alert(
+                    "Registration completed successfully!"
+                );
+
+                form.reset();
+
+            } else {
+
+                document.getElementById(
+                    "successBox"
+                ).style.display = "none";
+
+                alert(
+                    "Please correct all errors before registering."
+                );
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
+```
