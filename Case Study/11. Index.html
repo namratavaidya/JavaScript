@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Class Scheduler</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #edf2f8;
+      text-align: center;
+      padding: 30px 15px;
+    }
+    .card {
+      max-width: 480px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 14px #0002;
+    }
+    #clock {
+      font-size: 38px;
+      font-weight: bold;
+      margin: 22px;
+      color: #2457c5;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+    button {
+      border: 0;
+      border-radius: 5px;
+      background: #2457c5;
+      color: white;
+      cursor: pointer;
+    }
+    li { margin: 12px; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Smart Class Scheduler</h2>
+    <p>Set the time for your next class or study session.</p>
+
+    <input type="number" id="minutes"
+           min="1" max="180" value="5" aria-label="Minutes">
+    <button id="start">Start Timer</button>
+    <button id="stop">Stop Timer</button>
+
+    <div id="clock">05:00</div>
+    <p id="status">Timer is ready.</p>
+
+    <h3>Today's Schedule</h3>
+    <ul>
+      <li>09:00 AM — Web Technology</li>
+      <li>11:00 AM — Computer Networks</li>
+      <li>02:00 PM — Practical Session</li>
+    </ul>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
