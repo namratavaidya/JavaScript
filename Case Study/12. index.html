@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Management Dashboard</title>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f5fa;
+      color: #222;
+      margin: 0;
+      padding: 25px 15px;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #0001;
+    }
+
+    h1 {
+      color: #2457c5;
+    }
+
+    .task-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #2457c5;
+      color: white;
+    }
+
+    .delete {
+      background: #c62828;
+    }
+
+    .complete {
+      background: #23834c;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+    }
+
+    .task span {
+      overflow-wrap: anywhere;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: #777;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    #message {
+      color: #2457c5;
+    }
+
+    @media (max-width: 480px) {
+      .task-form, .task {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>My Task Dashboard</h1>
+    <p>Organize your daily activities and track your progress.</p>
+
+    <div class="card">
+      <h2>Add a Task</h2>
+
+      <form id="taskForm" class="task-form">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Enter a new task"
+          maxlength="120"
+          required
+        >
+        <button type="submit">Add Task</button>
+      </form>
+
+      <p id="message" role="status"></p>
+    </div>
+
+    <div class="card">
+      <h2>My Tasks</h2>
+      <p id="summary">Total: 0 | Completed: 0</p>
+      <div id="taskList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Online Activity Feed</h2>
+      <button id="loadData">Load Sample Data</button>
+      <p id="apiStatus">Click to load data from the API.</p>
+      <ul id="apiData"></ul>
+    </div>
+  </div>
+
+  <script>
+    let tasks = [];
+
+    try {
+      tasks = JSON.parse(localStorage.getItem("myTasks") || "[]");
+      if (!Array.isArray(tasks)) tasks = [];
+    } catch (error) {
+      tasks = [];
+    }
+
+    function saveTasks() {
+      try {
+        localStorage.setItem("myTasks", JSON.stringify(tasks));
+        $("#message").text("Tasks saved successfully.");
+      } catch (error) {
+        $("#message").text("Unable to save tasks in browser storage.");
+      }
+    }
+
+    function renderTasks() {
+      const list = $("#taskList");
+      list.empty();
+
+      tasks.forEach(task => {
+        const row = $("<div>").addClass("task");
+
+        const name = $("<span>").text(task.title);
+        if (task.completed) name.addClass("done");
+
+        const actions = $("<div>").addClass("actions");
+
+        const completeBtn = $("<button>")
+          .addClass("complete")
+          .text(task.completed ? "Undo" : "Complete")
+          .on("click", function() {
+            task.completed = !task.completed;
+            saveTasks();
+            renderTasks();
+          });
+
+        const deleteBtn = $("<button>")
+          .addClass("delete")
+          .text("Delete")
+          .on("click", function() {
+            tasks = tasks.filter(item => item.id !== task.id);
+            saveTasks();
+            renderTasks();
+          });
+
+        actions.append(completeBtn, deleteBtn);
+        row.append(name, actions);
+        list.append(row);
+      });
+
+      const completed = tasks.filter(task => task.completed).length;
+
+      $("#summary").text(
+        "Total: " + tasks.length +
+        " | Completed: " + completed +
+        " | Pending: " + (tasks.length - completed)
+      );
+
+      if (tasks.length === 0) {
+        list.text("No tasks yet. Add your first task above.");
+      }
+    }
+
+    $("#taskForm").on("submit", function(event) {
+      event.preventDefault();
+
+      const title = $("#taskInput").val().trim();
+      if (!title) {
+        $("#message").text("Please enter a task.");
+        return;
+      }
+
+      tasks.push({
+        id: Date.now() + Math.random(),
+        title: title,
+        completed: false
+      });
+
+      saveTasks();
+      renderTasks();
+      $("#taskInput").val("");
+    });
+
+    $("#loadData").on("click", function() {
+      $("#apiStatus").text("Loading data...");
+      $("#apiData").empty();
+
+      $.ajax({
+        url: "https://jsonplaceholder.typicode.com/posts?_limit=5",
+        method: "GET",
+        dataType: "json"
+      })
+      .done(function(data) {
+        data.forEach(post => {
+          $("<li>")
+            .text(post.title)
+            .appendTo("#apiData");
+        });
+
+        $("#apiStatus").text(
+          data.length + " sample records loaded successfully."
+        );
+      })
+      .fail(function() {
+        $("#apiStatus").text(
+          "Unable to load data. Check your internet connection."
+        );
+      });
+    });
+
+    renderTasks();
+  </script>
+</body>
+</html>
